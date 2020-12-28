@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>Task List</title>
+</head>
+<body>
+<form method="get" action="/lists">
+    <button type="submit">Back</button>
+</form>
+<h1 th:text="'Task List: ' + ${list.name}"/>
+<table>
+    <th:block th:each="task : ${list.tasks}">
+        <tr>
+            <td th:text="${task.description}"/>
+            <td>
+                <form method="post" action="/completeTask">
+                    <input type="hidden" name="id" th:value="${task.id}">
+                    <input type="hidden" name="listId" th:value="${list.id}">
+                    <button th:hidden="${task.done} ? 'true' : 'false'" type="submit">Complete</button>
+                </form>
+            </td>
+            <td>
+                <form method="post" action="/deleteTask">
+                    <input type="hidden" name="id" th:value="${task.id}">
+                    <input type="hidden" name="listId" th:value="${list.id}">
+                    <button type="hidden">Delete</button>
+                </form>
+            </td>
+        </tr>
+    </th:block>
+</table>
+<form method="post" action="/addTask">
+    <input type="hidden" name="listId" th:value="${list.id}">
+    <input type="text" name="description">
+    <button type="submit">Add</button>
+</form>
+</body>
+</html>
